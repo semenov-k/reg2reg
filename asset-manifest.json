@@ -1,19 +1,19 @@
 {
   "files": {
-    "main.js": "/reg2reg/static/js/main.c69830da.chunk.js",
-    "main.js.map": "/reg2reg/static/js/main.c69830da.chunk.js.map",
+    "main.js": "/reg2reg/static/js/main.64c96caf.chunk.js",
+    "main.js.map": "/reg2reg/static/js/main.64c96caf.chunk.js.map",
     "runtime-main.js": "/reg2reg/static/js/runtime-main.52aa1cff.js",
     "runtime-main.js.map": "/reg2reg/static/js/runtime-main.52aa1cff.js.map",
-    "static/js/2.2163df4f.chunk.js": "/reg2reg/static/js/2.2163df4f.chunk.js",
-    "static/js/2.2163df4f.chunk.js.map": "/reg2reg/static/js/2.2163df4f.chunk.js.map",
+    "static/js/2.5d169837.chunk.js": "/reg2reg/static/js/2.5d169837.chunk.js",
+    "static/js/2.5d169837.chunk.js.map": "/reg2reg/static/js/2.5d169837.chunk.js.map",
     "b199b3db2ecec9d81f17.worker.js": "/reg2reg/b199b3db2ecec9d81f17.worker.js",
     "b199b3db2ecec9d81f17.worker.js.map": "/reg2reg/b199b3db2ecec9d81f17.worker.js.map",
     "index.html": "/reg2reg/index.html",
-    "static/js/2.2163df4f.chunk.js.LICENSE.txt": "/reg2reg/static/js/2.2163df4f.chunk.js.LICENSE.txt"
+    "static/js/2.5d169837.chunk.js.LICENSE.txt": "/reg2reg/static/js/2.5d169837.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.52aa1cff.js",
-    "static/js/2.2163df4f.chunk.js",
-    "static/js/main.c69830da.chunk.js"
+    "static/js/2.5d169837.chunk.js",
+    "static/js/main.64c96caf.chunk.js"
   ]
 }
