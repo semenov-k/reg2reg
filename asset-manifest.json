@@ -1,19 +1,19 @@
 {
   "files": {
-    "main.js": "/reg2reg/static/js/main.64c96caf.chunk.js",
-    "main.js.map": "/reg2reg/static/js/main.64c96caf.chunk.js.map",
+    "main.js": "/reg2reg/static/js/main.40be0685.chunk.js",
+    "main.js.map": "/reg2reg/static/js/main.40be0685.chunk.js.map",
     "runtime-main.js": "/reg2reg/static/js/runtime-main.52aa1cff.js",
     "runtime-main.js.map": "/reg2reg/static/js/runtime-main.52aa1cff.js.map",
-    "static/js/2.5d169837.chunk.js": "/reg2reg/static/js/2.5d169837.chunk.js",
-    "static/js/2.5d169837.chunk.js.map": "/reg2reg/static/js/2.5d169837.chunk.js.map",
-    "b199b3db2ecec9d81f17.worker.js": "/reg2reg/b199b3db2ecec9d81f17.worker.js",
-    "b199b3db2ecec9d81f17.worker.js.map": "/reg2reg/b199b3db2ecec9d81f17.worker.js.map",
+    "static/js/2.6d0ecd79.chunk.js": "/reg2reg/static/js/2.6d0ecd79.chunk.js",
+    "static/js/2.6d0ecd79.chunk.js.map": "/reg2reg/static/js/2.6d0ecd79.chunk.js.map",
+    "14917a1f8781043c4eb8.worker.js": "/reg2reg/14917a1f8781043c4eb8.worker.js",
+    "14917a1f8781043c4eb8.worker.js.map": "/reg2reg/14917a1f8781043c4eb8.worker.js.map",
     "index.html": "/reg2reg/index.html",
-    "static/js/2.5d169837.chunk.js.LICENSE.txt": "/reg2reg/static/js/2.5d169837.chunk.js.LICENSE.txt"
+    "static/js/2.6d0ecd79.chunk.js.LICENSE.txt": "/reg2reg/static/js/2.6d0ecd79.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.52aa1cff.js",
-    "static/js/2.5d169837.chunk.js",
-    "static/js/main.64c96caf.chunk.js"
+    "static/js/2.6d0ecd79.chunk.js",
+    "static/js/main.40be0685.chunk.js"
   ]
 }
