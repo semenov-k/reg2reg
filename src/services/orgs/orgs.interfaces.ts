@@ -1,6 +1,9 @@
+import { SNOTypes } from '../../core/atol-xml-builder';
+
 export interface Org {
   name: string
-  api_key: string
+  email: string
   inn: string
-  npp: number
+  sno: SNOTypes 
+  paymentAddress: string
 }

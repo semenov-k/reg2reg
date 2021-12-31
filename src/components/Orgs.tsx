@@ -88,9 +88,6 @@ const Orgs: React.FC<Props> = ({
               <TableCell>
                 ИНН
               </TableCell>
-              <TableCell align="right">
-                Номер реестра
-              </TableCell>
               <TableCell align="center">
                 Статус задачи
               </TableCell>
@@ -126,9 +123,6 @@ const Orgs: React.FC<Props> = ({
                 </TableCell>
                 <TableCell>
                   {orgDescriptor.org.inn}
-                </TableCell>
-                <TableCell align="right">
-                  {orgDescriptor.org.npp}
                 </TableCell>
                 <TableCell align="center">
                   {orgDescriptor.taskStatus === OrgTaskStatus.IDLE &&

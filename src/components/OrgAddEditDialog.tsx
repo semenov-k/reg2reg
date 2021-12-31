@@ -5,18 +5,16 @@ import { Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material
 import { OrgsService } from '../services/orgs/orgs.service';
 import { Org } from '../services/orgs/orgs.interfaces';
 import TextField from '@mui/material/TextField';
-import InputAdornment from '@mui/material/InputAdornment';
-import IconButton from '@mui/material/IconButton';
 import FormControl from '@mui/material/FormControl';
-import OutlinedInput from '@mui/material/OutlinedInput';
 import InputLabel from '@mui/material/InputLabel';
-import FormHelperText from '@mui/material/FormHelperText';
-import Visibility from '@mui/icons-material/Visibility'
 import AddIcon from '@mui/icons-material/Add';
-import VisibilityOff from '@mui/icons-material/VisibilityOff'
 import Button from '@mui/material/Button';
 import SaveIcon from '@mui/icons-material/Save';
 import Grid from '@mui/material/Grid';
+import { SNOTypes } from '../core/atol-xml-builder';
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
+import FormHelperText from '@mui/material/FormHelperText';
 
 interface OrgAddEditDialogBodyProps {
   orgId?: string
@@ -26,9 +24,10 @@ interface OrgAddEditDialogBodyProps {
 
 const validationSchema = yup.object().shape({
   name: yup.string().required(),
+  email: yup.string().required().email(),
   inn: yup.string().required().isINN(),
-  api_key: yup.string().required(),
-  npp: yup.number().integer().required()
+  sno: yup.string().required(),
+  paymentAddress: yup.string().required()
 });
 
 const OrgAddEditDialogBody: React.FC<OrgAddEditDialogBodyProps> = ({
@@ -40,14 +39,14 @@ const OrgAddEditDialogBody: React.FC<OrgAddEditDialogBodyProps> = ({
 
   const orgsService = React.useMemo(() => new OrgsService(), []);
   const [editingOrg, setEditingOrg] = React.useState<Org>();
-  const [apiKeyIsVisible, setApiKeyIsVisible] = React.useState(false);
 
   const formik = useFormik({
     initialValues: editingOrg || {
       name: '',
+      email: '',
       inn: '',
-      api_key: '',
-      npp: 1
+      sno: SNOTypes.OSN,
+      paymentAddress: ''
     } as Org,
     validationSchema,
     onSubmit: (values) => {
@@ -67,8 +66,6 @@ const OrgAddEditDialogBody: React.FC<OrgAddEditDialogBodyProps> = ({
       setEditingOrg(org);
     }
   }, [orgId, orgsService]);
-
-  const handleClickShowApiKey = () => setApiKeyIsVisible(!apiKeyIsVisible);
 
   const dialogTitle = !isEditingForm 
     ? 'Добавление организации' 
@@ -98,6 +95,29 @@ const OrgAddEditDialogBody: React.FC<OrgAddEditDialogBodyProps> = ({
               />
             </Grid>
             <Grid item xs={12}>
+              <FormControl fullWidth>
+                <InputLabel id="sno_type">
+                  Система налогооблажения
+                </InputLabel>
+                <Select
+                  labelId="sno_type"
+                  name="sno"
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  value={formik.values.sno}
+                  label="Система налогооблажения"
+                >
+                  <MenuItem value={SNOTypes.OSN}>Основная</MenuItem>
+                  <MenuItem value={SNOTypes.ENVD}>Единый налог на вмененный доход</MenuItem>
+                  <MenuItem value={SNOTypes.ESN}>Единый сельскохозяйственный налог</MenuItem>
+                  <MenuItem value={SNOTypes.USN_INCOME}>Упрощенная (доходы)</MenuItem>
+                  <MenuItem value={SNOTypes.USN_INCOME_OUTCOME}>Упрощенная (доходы - расходы)</MenuItem>
+                  <MenuItem value={SNOTypes.PATENT}>Патент</MenuItem>
+                </Select>
+                <FormHelperText> </FormHelperText>
+              </FormControl>
+            </Grid>
+            <Grid item xs={12}>
               <TextField
                 fullWidth
                 variant="outlined"
@@ -113,46 +133,31 @@ const OrgAddEditDialogBody: React.FC<OrgAddEditDialogBodyProps> = ({
               />
             </Grid>
             <Grid item xs={12}>
-              <FormControl variant="outlined" fullWidth>
-                <InputLabel htmlFor="org.api_key">Ключ API</InputLabel>
-                <OutlinedInput
-                  type={apiKeyIsVisible ? 'text' : 'password'}
-                  id="org.api_keu"
-                  name="api_key"
-                  label="Ключ API"
-                  value={formik.values.api_key}
-                  onBlur={formik.handleBlur}
-                  onChange={formik.handleChange}
-                  error={formik.touched.api_key && Boolean(formik.errors.api_key)}
-                  autoComplete="off"
-                  endAdornment={
-                    <InputAdornment position="end">
-                      <IconButton
-                        onClick={handleClickShowApiKey}
-                        edge="end"
-                      >
-                        {apiKeyIsVisible ? <VisibilityOff /> : <Visibility />}
-                      </IconButton>
-                    </InputAdornment>
-                  }
-                />
-                <FormHelperText error={formik.touched.api_key && Boolean(formik.errors.api_key)}>
-                  {(formik.touched.api_key && formik.errors.api_key) || ' '}
-                </FormHelperText>
-              </FormControl>
+              <TextField
+                type="email"
+                fullWidth
+                variant="outlined"
+                name="email"
+                label="Электронная почта"
+                value={formik.values.email}
+                onBlur={formik.handleBlur}
+                onChange={formik.handleChange}
+                error={formik.touched.email && Boolean(formik.errors.email)}
+                helperText={(formik.touched.email && formik.errors.email) || ' '}
+                autoComplete="off"
+              />
             </Grid>
             <Grid item xs={12}>
               <TextField
-                type="number"
                 fullWidth
                 variant="outlined"
-                name="npp"
-                label="Порядковый номер реестра"
-                value={formik.values.npp}
+                name="paymentAddress"
+                label="Платежный web-адрес"
+                value={formik.values.paymentAddress}
                 onBlur={formik.handleBlur}
                 onChange={formik.handleChange}
-                error={formik.touched.npp && Boolean(formik.errors.npp)}
-                helperText={(formik.touched.npp && formik.errors.npp) || 'Будет указываться в названии реестра'}
+                error={formik.touched.paymentAddress && Boolean(formik.errors.paymentAddress)}
+                helperText={(formik.touched.paymentAddress && formik.errors.paymentAddress) || ' '}
                 autoComplete="off"
               />
             </Grid>

@@ -3,6 +3,9 @@ import * as yup from 'yup';
 yup.setLocale({
   mixed: {
     required: 'Обязательное поле'
+  },
+  string: {
+    email: 'Некорректный адрес электронной почты'
   }
 });
 
