@@ -4,6 +4,9 @@ import { ReportPaymentData } from './report-parser';
 import { getStringSizeInBytes } from './utils';
 import JSZip from 'jszip';
 
+/**
+ * Типы систем налогооблажения.
+ */
 export enum SNOTypes {
   OSN = 'osn',
   USN_INCOME = 'usn_income',
@@ -23,11 +26,19 @@ export class AtolXMLBuilder {
     private _companySno: SNOTypes,
     private _companyPaymentAddress: string
   ) { }
-
+  
+  /**
+   * Сборка ZIP архива с XML-фалами, содержащими платежи для фискализации. 
+   * @param paymentsData платежи для фискализации. 
+   * @returns zip-архив.
+   */
   async build(paymentsData: ReportPaymentData[]): Promise<File> {
+    // Содержимое файлов будем складывать в массив.
     let currentFileIndex = 0;
-    let currentFileSize = 0;
     const filesContent: ReportPaymentData[][] = [];
+
+    // Начальный вес первого файла.
+    let currentFileSize = 0;
 
     const xmlBuilder = new xml.Builder({
       xmldec: {
@@ -38,15 +49,23 @@ export class AtolXMLBuilder {
     });
 
     for (let paymentData of paymentsData) {
+      // Получаем объект чека для сериализации.
       const checkObject = this._buildCheck(paymentData);
+
+      // Сериализуем его в XML.
       const checkXml = xmlBuilder.buildObject(checkObject);
+
+      // Считаем размер получившегося чека.
       const checkXmlSize = getStringSizeInBytes(checkXml);
 
+      // Если мы добавим чек в текущий файл, будет ли файл больше this._MAX_XML_FILE_SIZE?
       if (currentFileSize + checkXmlSize > this._MAX_XML_FILE_SIZE) {
+        // Если да, то добавляем чек в следующий пустой файл.
         currentFileIndex++;
         currentFileSize = checkXmlSize;
         filesContent[currentFileIndex] = [paymentData]
       } else {
+        // Если нет, то добавляем его в текущий.
         currentFileSize += checkXmlSize;
         if (filesContent[currentFileIndex] === undefined) {
           filesContent[currentFileIndex] = [];
@@ -57,6 +76,7 @@ export class AtolXMLBuilder {
 
     const resultZip = new JSZip();
 
+    // Зипуем все файлы из массива XML-файлов. Формат N.xml, где N - номер файла.
     for (let i = 0; i < filesContent.length; i++) {
       resultZip.file(
         `${i + 1}.xml`,
@@ -66,10 +86,16 @@ export class AtolXMLBuilder {
       )
     }
 
+    // Генерируем и возвращаем конечный файл result.zip.
     const resultBlob = await resultZip.generateAsync({ type: 'blob' });
     return new File([resultBlob], 'result.zip');
   }
 
+  /**
+   * Формирование содержимого целого файла.
+   * @param paymentsData платежи для фискализации.
+   * @returns объект с содержимым файла.
+   */
   private _buildFileObject(paymentsData: ReportPaymentData[]): object {
     const fileObject = {
       main: paymentsData.map((paymentData) => (this._buildCheck(paymentData)))
@@ -78,6 +104,12 @@ export class AtolXMLBuilder {
     return fileObject;
   }
 
+  /**
+   * Формирование объекта позиции в чеке.
+   * @param serviceName название позиции (услуги)ю
+   * @param amount сумма.
+   * @returns объект позиции в чеке.
+   */
   private _buildPaymentItem(serviceName: string, amount: number): object {
     return {
       name: serviceName,
@@ -93,6 +125,11 @@ export class AtolXMLBuilder {
     }
   }
 
+  /**
+   * Формирование объекта одного чека (платежа).
+   * @param paymentData данные платежа.
+   * @returns объект чека.
+   */
   private _buildCheck(paymentData: ReportPaymentData): object {
     return {
       check: {
