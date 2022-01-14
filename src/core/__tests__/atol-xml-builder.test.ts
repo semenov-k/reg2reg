@@ -1,5 +1,5 @@
 /**
- * @jest-environment ./src/test-env.ts
+ * @jest-environment ./src/test-env.js
  */
 
 import path from 'path';
@@ -25,10 +25,17 @@ test('Creates ATOL XML correctly', async () => {
       servicesAmount: 920.5,
       peniAmount: 79.5,
       operationId: "401881339899"
+    },
+    {
+      date: new Date('10/19/2021'),
+      fullAmount: 79.5,
+      servicesAmount: undefined,
+      peniAmount: 79.5,
+      operationId: "221881339822"
     }
   ];
 
-  const builder = new AtolXMLBuilder('test@test.ru', '39874398274', SNOTypes.OSN, 'https://test.com/pay');
+  const builder = new AtolXMLBuilder('test@test.ru', '39874398274', 'check@test.ru', SNOTypes.OSN, 'https://test.com/pay');
 
   const resultFile = await builder.build(testPaymentsData);
   const resultZip = new Zip();

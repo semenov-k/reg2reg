@@ -25,6 +25,7 @@ interface OrgAddEditDialogBodyProps {
 const validationSchema = yup.object().shape({
   name: yup.string().required(),
   email: yup.string().required().email(),
+  checkEmail: yup.string().required().email(),
   inn: yup.string().required().isINN(),
   sno: yup.string().required(),
   paymentAddress: yup.string().required()
@@ -44,6 +45,7 @@ const OrgAddEditDialogBody: React.FC<OrgAddEditDialogBodyProps> = ({
     initialValues: editingOrg || {
       name: '',
       email: '',
+      checkEmail: '',
       inn: '',
       sno: SNOTypes.OSN,
       paymentAddress: ''
@@ -144,6 +146,21 @@ const OrgAddEditDialogBody: React.FC<OrgAddEditDialogBodyProps> = ({
                 onChange={formik.handleChange}
                 error={formik.touched.email && Boolean(formik.errors.email)}
                 helperText={(formik.touched.email && formik.errors.email) || ' '}
+                autoComplete="off"
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                type="email"
+                fullWidth
+                variant="outlined"
+                name="checkEmail"
+                label="Электронная почта для отправки чеков"
+                value={formik.values.checkEmail}
+                onBlur={formik.handleBlur}
+                onChange={formik.handleChange}
+                error={formik.touched.checkEmail && Boolean(formik.errors.checkEmail)}
+                helperText={(formik.touched.checkEmail && formik.errors.checkEmail) || ' '}
                 autoComplete="off"
               />
             </Grid>

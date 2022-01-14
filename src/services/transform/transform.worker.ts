@@ -4,6 +4,6 @@ import { ReportParser } from "../../core/report-parser";
 
 export const transformRegister = async (sourceFile: File, org: Org): Promise<File> => {
   const paymentsData = await ReportParser.parse(sourceFile);
-  const resultFile = new AtolXMLBuilder(org.email, org.inn, org.sno, org.paymentAddress).build(paymentsData)
+  const resultFile = new AtolXMLBuilder(org.email, org.inn, org.checkEmail, org.sno, org.paymentAddress).build(paymentsData)
   return resultFile;
 }

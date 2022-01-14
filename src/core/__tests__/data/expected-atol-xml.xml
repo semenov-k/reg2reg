@@ -7,7 +7,7 @@
     <receipt>
       <operation>sell</operation>
       <client>
-        <email>test@test.ru</email>
+        <email>check@test.ru</email>
       </client>
       <company>
         <email>test@test.ru</email>
@@ -25,7 +25,8 @@
           <payment_method>full_payment</payment_method>
           <payment_object>service</payment_object>
           <vat>
-            <type>none</type>
+            <type>vat120</type>
+            <sum>666.67</sum>
           </vat>
         </item>
       </items>
@@ -37,8 +38,8 @@
       </payments>
       <vats>
         <vat>
-          <type>none</type>
-          <sum>0.00</sum>
+          <type>vat120</type>
+          <sum>666.67</sum>
         </vat>
       </vats>
       <total>4000.00</total>
@@ -51,7 +52,7 @@
     <receipt>
       <operation>sell</operation>
       <client>
-        <email>test@test.ru</email>
+        <email>check@test.ru</email>
       </client>
       <company>
         <email>test@test.ru</email>
@@ -69,7 +70,8 @@
           <payment_method>full_payment</payment_method>
           <payment_object>service</payment_object>
           <vat>
-            <type>none</type>
+            <type>vat120</type>
+            <sum>153.42</sum>
           </vat>
         </item>
         <item>
@@ -93,11 +95,55 @@
       </payments>
       <vats>
         <vat>
+          <type>vat120</type>
+          <sum>153.42</sum>
+        </vat>
+      </vats>
+      <total>1000.00</total>
+    </receipt>
+  </check>
+  <check>
+    <timestamp>19.10.2021 14:00:00</timestamp>
+    <external_id>221881339822</external_id>
+    <is_bso>false</is_bso>
+    <receipt>
+      <operation>sell</operation>
+      <client>
+        <email>check@test.ru</email>
+      </client>
+      <company>
+        <email>test@test.ru</email>
+        <inn>39874398274</inn>
+        <sno>osn</sno>
+        <payment_address>https://test.com/pay</payment_address>
+      </company>
+      <items>
+        <item>
+          <name>Пени</name>
+          <price>79.50</price>
+          <quantity>1</quantity>
+          <sum>79.50</sum>
+          <measurement_unit>мес.</measurement_unit>
+          <payment_method>full_payment</payment_method>
+          <payment_object>service</payment_object>
+          <vat>
+            <type>none</type>
+          </vat>
+        </item>
+      </items>
+      <payments>
+        <payment>
+          <type>1</type>
+          <sum>79.50</sum>
+        </payment>
+      </payments>
+      <vats>
+        <vat>
           <type>none</type>
           <sum>0.00</sum>
         </vat>
       </vats>
-      <total>1000.00</total>
+      <total>79.50</total>
     </receipt>
   </check>
 </main>

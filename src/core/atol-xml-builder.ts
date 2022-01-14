@@ -3,6 +3,7 @@ import moment from 'moment';
 import { ReportPaymentData } from './report-parser';
 import { getStringSizeInBytes } from './utils';
 import JSZip from 'jszip';
+import { NDSCalc, NDSType } from './nds-calc';
 
 /**
  * Типы систем налогооблажения.
@@ -23,6 +24,7 @@ export class AtolXMLBuilder {
   constructor(
     private _companyEmail: string,
     private _companyInn: string,
+    private _checkEmail: string,
     private _companySno: SNOTypes,
     private _companyPaymentAddress: string
   ) { }
@@ -108,9 +110,10 @@ export class AtolXMLBuilder {
    * Формирование объекта позиции в чеке.
    * @param serviceName название позиции (услуги)ю
    * @param amount сумма.
+   * @param vatType тип НДС.
    * @returns объект позиции в чеке.
    */
-  private _buildPaymentItem(serviceName: string, amount: number): object {
+  private _buildPaymentItem(serviceName: string, amount: number, vatType: NDSType): object {
     return {
       name: serviceName,
       price: amount.toFixed(2),
@@ -120,7 +123,8 @@ export class AtolXMLBuilder {
       payment_method: "full_payment",
       payment_object: "service",
       vat: {
-        type: "none"
+        type: vatType,
+        ...(vatType !== NDSType.none ? { sum: NDSCalc.calcFor(vatType, amount)!.toFixed(2) } : {})
       }
     }
   }
@@ -140,7 +144,7 @@ export class AtolXMLBuilder {
           operation: "sell",
           client: {
             // Тут уточнить
-            email: this._companyEmail
+            email: this._checkEmail
           },
           company: {
             email: this._companyEmail,
@@ -151,10 +155,10 @@ export class AtolXMLBuilder {
           items: {
             item: [
               ...(paymentData.servicesAmount
-                ? [this._buildPaymentItem("Оплата ЖКУ", paymentData.servicesAmount)]
+                ? [this._buildPaymentItem("Оплата ЖКУ", paymentData.servicesAmount, NDSType.vat120)]
                 : []),
               ...(paymentData.peniAmount
-                ? [this._buildPaymentItem("Пени", paymentData.peniAmount)]
+                ? [this._buildPaymentItem("Пени", paymentData.peniAmount, NDSType.none)]
                 : [])
             ]
           },
@@ -166,8 +170,8 @@ export class AtolXMLBuilder {
           },
           vats: {
             vat: {
-              type: "none",
-              sum: "0.00"
+              type: paymentData.servicesAmount ? NDSType.vat120 : NDSType.none,
+              sum: paymentData.servicesAmount ? NDSCalc.calcFor(NDSType.vat120, paymentData.servicesAmount)!.toFixed(2) : "0.00"
             }
           },
           total: paymentData.fullAmount.toFixed(2)
